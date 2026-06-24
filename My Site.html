@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Skill - Harendra Services Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --secondary-color: #00c853;
+            --dark-color: #1e293b;
+            --light-bg: #f8fafc;
+            --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--dark-color);
+            min-height: 100vh;
+        }
+
+        /* --- LOGIN SCREEN --- */
+        #loginScreen {
+            background: linear-gradient(135deg, #0a1128 0%, #102a43 100%);
+            position: fixed;
+            top:0; left:0; width:100%; height:100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: var(--transition);
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            text-align: center;
+        }
+
+        .login-box h2 {
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .login-box p {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        /* --- MAIN DASHBOARD --- */
+        #mainDashboard {
+            display: none;
+            width: 100%;
+        }
+
+        /* Navbar Style */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-area h1 {
+            font-size: 24px;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .nav-buttons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn-whatsapp {
+            background-color: #25d366;
+            color: white;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 30px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+            transition: var(--transition);
+        }
+
+        .btn-whatsapp:hover {
+            transform: translateY(-2px);
+            background-color: #20ba5a;
+        }
+
+        .btn-admin {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .btn-admin:hover {
+            background-color: #004085;
+            transform: translateY(-2px);
+        }
+
+        .btn-logout {
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-logout:hover { background-color: #dc2626; }
+
+        /* Cover Container with Custom Margins & Centered Image */
+        .cover-container {
+            width: 100%;
+            background: #0a1128;
+            padding: 20px 5%;
+            display: table;
+            text-align: center;
+            border-bottom: 4px solid var(--primary-color);
+        }
+
+        .cover-container img {
+            max-width: 100%;
+            height: auto;
+            max-height: 380px;
+            display: inline-block;
+            vertical-align: middle;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+
+        /* Search and Filter Tabs Component */
+        .search-filter-section {
+            padding: 30px 5%;
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .search-box-wrapper {
+            max-width: 600px;
+            margin: 0 auto 25px auto;
+            position: relative;
+        }
+
+        .search-box-wrapper input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border-radius: 50px;
+            border: 2px solid #cbd5e1;
+            font-size: 16px;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .search-box-wrapper input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(0, 86, 179, 0.15);
+        }
+
+        .search-box-wrapper i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 18px;
+        }
+
+        .tabs-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 10px 22px;
+            border-radius: 30px;
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #64748b;
+            transition: var(--transition);
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Main Portal Grid */
+        .main-container {
+            max-width: 1300px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 25px;
+        }
+
+        /* Colorful Service List Cards Design */
+        .work-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 25px 20px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(0,0,0,0.03);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .work-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Action Menu for Edit/Delete */
+        .card-actions {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: 10;
+        }
+
+        .action-trigger {
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid #cbd5e1;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #64748b;
+            font-size: 13px;
+            transition: var(--transition);
+        }
+
+        .action-trigger:hover {
+            background: #f1f5f9;
+            color: var(--primary-color);
+        }
+
+        .action-dropdown {
+            position: absolute;
+            top: 32px;
+            right: 0;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: none;
+            flex-direction: column;
+            width: 100px;
+            overflow: hidden;
+            z-index: 20;
+        }
+
+        .action-dropdown button {
+            padding: 8px 12px;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            width: 100%;
+        }
+
+        .action-dropdown button.edit-opt { color: #0284c7; }
+        .action-dropdown button.edit-opt:hover { background: #f0f9ff; }
+        .action-dropdown button.delete-opt { color: #ef4444; }
+        .action-dropdown button.delete-opt:hover { background: #fef2f2; }
+
+        .image-container {
+            width: 85px;
+            height: 85px;
+            background: #f1f5f9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            transition: var(--transition);
+        }
+
+        .work-card:hover .image-container {
+            background: #e2e8f0;
+            transform: scale(1.05);
+        }
+
+        .image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .work-card h3 {
+            font-size: 17px;
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .card-btn {
+            width: 100%;
+            padding: 11px 0;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .card-btn:hover {
+            opacity: 0.9;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        /* --- MODAL DIALOGS --- */
+        .modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 35px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 24px; cursor: pointer; color: #94a3b8;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #64748b;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%; padding: 12px;
+            border: 1px solid #cbd5e1; border-radius: 8px;
+            outline: none; font-size: 15px;
+        }
+
+        .select-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-inline-add {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: var(--primary-color);
+            padding: 0 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .btn-inline-add:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .btn-submit {
+            width: 100%; padding: 12px;
+            background: var(--primary-color); color: white;
+            border: none; border-radius: 8px;
+            font-weight: 600; font-size: 16px; cursor: pointer;
+        }
+
+        footer {
+            text-align: center; padding: 25px;
+            background: #ffffff; border-top: 1px solid #e2e8f0;
+            color: #64748b; font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .navbar { flex-direction: column; gap: 15px; }
+            .tabs-container { gap: 5px; }
+            .cover-container { padding: 10px 3%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loginScreen">
+        <div class="login-box">
+            <h2>Digital Skill Hub</h2>
+            <p>Admin Security Authentication</p>
+            
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="portalUsername" placeholder="Enter Username" autocomplete="off">
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="portalPassword" placeholder="Enter Password">
+            </div>
+
+            <button class="btn-submit" onclick="checkAuth()">Login Dashboard</button>
+            <p id="loginError" style="color: #ef4444; margin-top: 15px; display: none; font-weight: 600; font-size: 14px;">Invalid Username or Password! Try again.</p>
+        </div>
+    </div>
+
+    <div id="mainDashboard">
+        <nav class="navbar">
+            <div class="logo-area">
+                <h1>Harendra Services</h1>
+            </div>
+            <div class="nav-buttons">
+                <a href="https://wa.me/916206753604" target="_blank" class="btn-whatsapp">
+                    <i class="fab fa-whatsapp"></i> Chat Support
+                </a>
+                <button class="btn-admin" onclick="openAdminModal('ADD')">
+                    <i class="fas fa-plus-circle"></i> Add New Site
+                </button>
+                <button class="btn-logout" onclick="logout()">Logout</button>
+            </div>
+        </nav>
+
+        <div class="cover-container">
+            <img src="https://i.ibb.co/fdKbcf94/Chat-GPT-Image-Jun-23-2026-07-50-54-PM.png" alt="Digital Skill Cover">
+        </div>
+
+        <div class="search-filter-section">
+            <div class="search-box-wrapper">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" oninput="filterPortals()" placeholder="Search from portals, forms or softwares...">
+            </div>
+
+            <div class="tabs-container" id="dynamicTabsContainer">
+                </div>
+        </div>
+
+        <div class="main-container">
+            <div class="grid-container" id="portalGrid">
+                </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 Harendra All Types Work Sites. Developed with premium layout.</p>
+        </footer>
+    </div>
+
+    <div id="adminModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeAdminModal()">&times;</span>
+            <h3 id="modalTitle"><i class="fas fa-folder-plus"></i> Add New Service Site</h3>
+            <br>
+            <form onsubmit="handleFormSubmit(event)">
+                <input type="hidden" id="editIndex">
+                <div class="form-group">
+                    <label>Portal / Site Name</label>
+                    <input type="text" id="siteName" required placeholder="e.g. Aadhaar Services">
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <div class="select-row">
+                        <select id="siteCategory" required>
+                            </select>
+                        <button type="button" class="btn-inline-add" onclick="addNewCategoryPrompt()" title="Add Custom Category">+</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Website Link URL</label>
+                    <input type="url" id="siteUrl" required placeholder="https://example.com">
+                </div>
+                <div class="form-group">
+                    <label>Icon Image URL (Logo Link)</label>
+                    <input type="url" id="siteIconUrl" required placeholder="https://upload.wikimedia.org/.../logo.png">
+                </div>
+                <button type="submit" id="submitBtn" class="btn-submit">Publish To Dashboard</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const cardColors = ['#0056b3', '#ff9800', '#4caf50', '#e91e63', '#9c27b0', '#00bcd4', '#673ab7'];
+
+        // Default Categories List saved in LocalStorage
+        let customCategories = JSON.parse(localStorage.getItem('portalCategories')) || [
+            'Govt. Site Work', 'Application Form', 'Software', 'Social Media', 'AI Tool'
+        ];
+
+        let primaryData = JSON.parse(localStorage.getItem('portalDatabase')) || [
+            { name: "CSC SOFTWARE BY HK", category: "Software", url: "https://script.google.com/macros/s/AKfycbxhliUMP_cVnc8ooeXZk7LA0iMHcHgfSiIbyAdsCKhpapWkHCkKHnPJsvPvBb3wT61n/exec", icon: "https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg" },
+            { name: "Aadhaar Portal", category: "Govt. Site Work", url: "https://uidai.gov.in", icon: "https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg" },
+            { name: "PM Kisan", category: "Govt. Site Work", url: "https://pmkisan.gov.in", icon: "https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg" },
+            { name: "Income Tax", category: "Govt. Site Work", url: "https://www.incometax.gov.in", icon: "https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg" },
+            { name: "EPFO", category: "Govt. Site Work", url: "https://www.epfindia.gov.in", icon: "https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg" },
+            { name: "Passport Seva", category: "Govt. Site Work", url: "https://www.passportindia.gov.in", icon: "https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg" },
+            { name: "Form Apply Gov Job", category: "Application Form", url: "https://onlineupdatestm.in/", icon: "https://i.ibb.co/1tNrHs1L/IMG-20230902-135516.jpg" }
+        ];
+
+        let selectedFilter = 'All';
+        let currentMode = 'ADD';
+
+        // FIXED: Double Auth (Username & Password) Logic
+        function checkAuth() {
+            const user = document.getElementById('portalUsername').value.trim();
+            const pin = document.getElementById('portalPassword').value;
+            
+            // Yahan aap apna username aur password badal sakte hain
+            if(user === "admin" && pin === "admin123") {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('mainDashboard').style.display = 'block';
+                renderTabs();
+                renderPortals();
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        }
+
+        function logout() {
+            document.getElementById('portalUsername').value = '';
+            document.getElementById('portalPassword').value = '';
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('mainDashboard').style.display = 'none';
+            document.getElementById('loginError').style.display = 'none';
+        }
+
+        // Dynamic Filter Tabs Function
+        function renderTabs() {
+            const tabsContainer = document.getElementById('dynamicTabsContainer');
+            tabsContainer.innerHTML = `<button class="tab-btn ${selectedFilter === 'All' ? 'active' : ''}" onclick="switchCategory('All', this)">All</button>`;
+            
+            customCategories.forEach(cat => {
+                const isActive = selectedFilter === cat ? 'active' : '';
+                tabsContainer.innerHTML += `<button class="tab-btn ${isActive}" onclick="switchCategory('${cat}', this)">${cat}</button>`;
+            });
+
+            // Sync Category Dropdown options in Modal
+            const selectDropdown = document.getElementById('siteCategory');
+            selectDropdown.innerHTML = '';
+            customCategories.forEach(cat => {
+                selectDropdown.innerHTML += `<option value="${cat}">${cat}</option>`;
+            });
+        }
+
+        // Add Custom Category Functionality
+        function addNewCategoryPrompt() {
+            const newCat = prompt("Nayi Category ka naam enter karein:");
+            if (newCat && newCat.trim() !== "") {
+                const cleanCat = newCat.trim();
+                if (!customCategories.includes(cleanCat)) {
+                    customCategories.push(cleanCat);
+                    localStorage.setItem('portalCategories', JSON.stringify(customCategories));
+                    renderTabs();
+                    document.getElementById('siteCategory').value = cleanCat;
+                    alert(`"${cleanCat}" Category kamyabi se add ho gayi!`);
+                } else {
+                    alert("Yeh category pehle se maujood hai!");
+                }
+            }
+        }
+
+        function renderPortals() {
+            const grid = document.getElementById('portalGrid');
+            grid.innerHTML = '';
+            
+            const searchValue = document.getElementById('searchInput').value.toLowerCase();
+
+            const filtered = primaryData.map((item, originalIndex) => ({...item, originalIndex}))
+            .filter(item => {
+                const matchCategory = (selectedFilter === 'All' || item.category === selectedFilter);
+                const matchSearch = item.name.toLowerCase().includes(searchValue);
+                return matchCategory && matchSearch;
+            });
+
+            filtered.forEach((element, index) => {
+                const currentColor = cardColors[index % cardColors.length];
+                const card = document.createElement('div');
+                card.className = 'work-card';
+                
+                card.innerHTML = `
+                    <div style="position:absolute; top:0; left:0; width:100%; height:5px; background:${currentColor}"></div>
+                    <div class="card-actions">
+                        <div class="action-trigger" onclick="toggleDropdown(event, ${index})">
+                            <i class="fas fa-cog"></i>
+                        </div>
+                        <div class="action-dropdown" id="dropdown-${index}">
+                            <button class="edit-opt" onclick="setupEditPortal(${element.originalIndex})">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="delete-opt" onclick="deletePortal(${element.originalIndex})">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                    <div class="image-container">
+                        <img src="${element.icon}" alt="Logo" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg'">
+                    </div>
+                    <h3>${element.name}</h3>
+                    <a class="card-btn" href="${element.url}" target="_blank" style="background:${currentColor}">
+                        Access Portal <i class="fas fa-external-link-alt"></i>
+                    </a>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function toggleDropdown(event, index) {
+            event.stopPropagation();
+            const currentDropdown = document.getElementById(`dropdown-${index}`);
+            const isVisible = currentDropdown.style.display === 'flex';
+            document.querySelectorAll('.action-dropdown').forEach(d => d.style.display = 'none');
+            if (!isVisible) { currentDropdown.style.display = 'flex'; }
+        }
+
+        document.body.addEventListener('click', () => {
+            document.querySelectorAll('.action-dropdown').forEach(d => d.style.display = 'none');
+        });
+
+        function switchCategory(category, buttonRef) {
+            selectedFilter = category;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            buttonRef.classList.add('active');
+            renderPortals();
+        }
+
+        function filterPortals() { renderPortals(); }
+
+        function openAdminModal(mode) {
+            currentMode = mode;
+            renderTabs(); 
+            if(mode === 'ADD') {
+                document.getElementById('modalTitle').innerHTML = '<i class="fas fa-folder-plus"></i> Add New Service Site';
+                document.getElementById('submitBtn').innerText = 'Publish To Dashboard';
+                document.getElementById('editIndex').value = '';
+                document.getElementById('siteName').value = '';
+                document.getElementById('siteUrl').value = '';
+                document.getElementById('siteIconUrl').value = '';
+            }
+            document.getElementById('adminModal').style.display = 'flex';
+        }
+
+        function closeAdminModal() { document.getElementById('adminModal').style.display = 'none'; }
+
+        function setupEditPortal(index) {
+            const portal = primaryData[index];
+            openAdminModal('EDIT');
+            document.getElementById('editIndex').value = index;
+            document.getElementById('siteName').value = portal.name;
+            document.getElementById('siteCategory').value = portal.category;
+            document.getElementById('siteUrl').value = portal.url;
+            document.getElementById('siteIconUrl').value = portal.icon;
+            document.getElementById('modalTitle').innerHTML = '<i class="fas fa-edit"></i> Edit Service Site';
+            document.getElementById('submitBtn').innerText = 'Update Changes';
+        }
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const record = {
+                name: document.getElementById('siteName').value,
+                category: document.getElementById('siteCategory').value,
+                url: document.getElementById('siteUrl').value,
+                icon: document.getElementById('siteIconUrl').value
+            };
+            if(currentMode === 'ADD') { primaryData.push(record); } 
+            else if(currentMode === 'EDIT') { primaryData[document.getElementById('editIndex').value] = record; }
+            localStorage.setItem('portalDatabase', JSON.stringify(primaryData));
+            closeAdminModal();
+            renderPortals();
+        }
+
+        function deletePortal(index) {
+            if(confirm(`Kya aap "${primaryData[index].name}" site ko delete karna chahte hain?`)) {
+                primaryData.splice(index, 1);
+                localStorage.setItem('portalDatabase', JSON.stringify(primaryData));
+                renderPortals();
+            }
+        }
+    </script>
+</body>
+</html>
