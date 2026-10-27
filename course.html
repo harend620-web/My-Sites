@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>courseenroll</title>
+
+<style>
+  
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding-top: 0px;
+}
+
+/* Header & Navbar */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(245, 0, 0, 0.10196078431372549);
+        }
+
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #fc0822;
+        }
+
+        .logo span {
+            color: #1211fa;
+        }
+
+
+.course-img {
+            width: 100%;
+            height: 150px;
+            background-color: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #6c757d;
+        }
+
+        .course-card h3 {
+            font-size: 18px;
+            margin: 15px 10px 5px;
+      color:#000c05
+        }
+
+.watch-btn{ display: inline-block;
+            background-color: #016327;
+            color: #ffffff;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 15px;
+            
+          }
+
+  /* Modal background overlay */
+.modal-overlay {
+  display: none; /* Default me hidden rahega */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: none(252, 249, 249, 0.6509803921568628);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Modal Popup Box */
+.modal-card {
+  background: #ffffff;
+  padding: 24px;
+  width: 85%;
+  max-width: 320px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(215, 63, 63, 0.30196078431372547);
+}
+
+.modal-card h3 {
+  margin: 0 0 15px;
+  font-size: 18px;
+  color: #222;
+}
+
+.modal-card input {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 18px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.modal-card input:focus {
+  border-color: #0b793a;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.modal-btn {
+  flex: 1;
+  padding: 10px 0;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.submit-btn {
+  background-color: #0b793a;
+  color: #fff;
+}
+
+.cancel-btn {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+
+</style>
+</head>
+
+<body>
+
+  <!-- Header -->
+    <header>
+        <div class="logo"><b>Harendra</b> <span><b>Academy</b></span></div>
+      
+  <a href="dashboard.html">⬅️ <b>BACK</b></a>
+    </header>
+  <!-- Course 1 -->
+            <div class="course-card">
+                <img src="basiccomputer.png" width="315" height="140">
+                <h3>Basic Computer Full Course</h3>
+<!-- Basic Computer Course Button -->
+<button class="watch-btn" onclick="checkAccess('basic')">Watch Now</button>
+
+              
+ </div>
+<br>
+<div class="course-card">
+                <img src="ai.png" width="315" height="140">
+                <h3>Artificial Intelligence</h3>
+              <!-- Artificial Intelligence Course Button -->
+<button class="watch-btn" onclick="checkAccess('ai')">Watch Now</button>
+
+</div>
+<br>
+<div class="course-card">
+                <img src="engspeak.png" width="315" height="140">
+                <h3>English Speaking Full Course</h3>
+  <button class="watch-btn" onclick="checkAccess('ai')">Watch Now</button>
+</div>
+<!-- Custom Password Modal Box -->
+<div id="passwordModal" class="modal-overlay">
+  <div class="modal-card">
+    <h3 id="modalCourseTitle">Enter Password</h3>
+    <input type="password" id="coursePassInput" placeholder="Enter password here..." />
+    <div class="modal-actions">
+      <button class="modal-btn submit-btn" onclick="validatePassword()">Submit</button>
+      <button class="modal-btn cancel-btn" onclick="closePasswordModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+<script>
+// Har course ka config: Password, Title aur Target File
+const courseData = {
+  'basic': {
+    title: 'Basic Computer Course',
+    password: 'BASIC123',
+    targetPage: 'basiccompvideo.html'
+  },
+  'ai': {
+    title: 'Artificial Intelligence Course',
+    password: 'AI786',
+    targetPage: 'aicoursevideo.html'
+  },
+  'english': {
+    title: 'English Speaking Course',
+    password: 'ENG999',
+    targetPage: 'english_course.html'
+  }
+};
+
+let selectedCourseKey = '';
+
+// Watch Now button click hone par modal open karega
+function checkAccess(courseKey) {
+  selectedCourseKey = courseKey;
+  const course = courseData[courseKey];
+  
+  if (course) {
+    document.getElementById('modalCourseTitle').innerText = course.title;
+    document.getElementById('coursePassInput').value = '';
+    document.getElementById('passwordModal').style.display = 'flex';
+  }
+}
+
+// Modal band karne ke liye
+function closePasswordModal() {
+  document.getElementById('passwordModal').style.display = 'none';
+}
+
+// Submit button click hone par password check hoga
+function validatePassword() {
+  const enteredPass = document.getElementById('coursePassInput').value.trim();
+  const currentCourse = courseData[selectedCourseKey];
+
+  if (!enteredPass) {
+    alert("Kripya password daalein!");
+    return;
+  }
+
+  if (enteredPass === currentCourse.password) {
+    closePasswordModal();
+    window.location.href = currentCourse.targetPage; // Sahi password par next file open hogi
+  } else {
+    alert("Galat Password! Kripya sahi password enter karein.");
+  }
+}
+</script>
+
+
+</body>
+</html>
